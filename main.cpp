@@ -1,9 +1,11 @@
 #include "fraction.h"
 
 #include <iostream>
-#include <stdexcept>
-
-using namespace std;
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std ;
 enum class Block
 {
     Mo1,
@@ -84,12 +86,12 @@ void aufgabe_14_a(Block input)
         break;
     case 5:
         //  cout << "Samstag" << endl;
-        /*  return Tag::SA; */
+        /*  return TagSA; */
         break;
     default:
         cout << "Invalid Argument" << endl;
         throw invalid_argument("LMAO Cannot happen due to Strong Enum usage as input");
-        /*        return Tag::DI; */
+        /*        return TagDI; */
 
         //    invalid_argument; // invalid_argument
         break;
@@ -97,7 +99,7 @@ void aufgabe_14_a(Block input)
 }
 bool aufgabe14_b(Block input)
 {
-    return static_cast<int>(input) >= 24 || static_cast<int>(input) <= 27 ? true : false;
+    return static_cast<int>(input) >= 24 && static_cast<int>(input) <= 27 ? true : false;
 }
 
 void aufgabe_16()
@@ -131,13 +133,206 @@ void aufgabe_16()
     cout << "Division: ";
     printFraction(result);
 }
+ struct Result
+{
+    bool success;
+    string reason;
+    void printReason()
+    {
+        cout << this->reason << endl;
+    }
+} ;
+
+template <typename T>
+Result checkSorting(vector<T> input)
+{
+    Result output;
+    if (input.size() == 0)
+    {
+        output.reason = "Es gibt nichts auf dem Array";
+        output.success = false;
+        return output;
+    }
+    else if (input.size() != 0)
+    {
+         vector<T> duplicated = input;
+        sort(duplicated.begin(), duplicated.end());
+
+        for (long long unsigned int i = 0; i < duplicated.size(); i++)
+        {
+            if (input[i] != duplicated[i])
+            {
+                output.reason = "";
+                output.reason += ".";
+                output.reason += static_cast<char>(i);
+                output.reason += " steht nicht in seine korrekte Position";
+                output.success = false;
+                return output;
+                break;
+            }
+        }
+    }
+    
+        output.success = true;
+        return output;
+    
+}
+template <typename T>
+void addData(vector<T> &inputArr)
+{
+    T inputUser;
+    cin >> inputUser;
+    inputArr.push_back(inputUser);
+}
+
+template <typename T>
+Result printData(vector<T> input)
+{
+    Result output;
+
+    if (input.size() == 0)
+    {
+        output.reason = "Es gibt nichts auf dem Array";
+        output.success = false;
+        return output;
+    }
+    else
+    {
+        for (const auto &element : input)
+        {
+            cout << element << std::endl;
+        }
+        output.success = true;
+        return output;
+    }
+}
+template <typename T>
+void inner(vector<T> input)
+
+{
+
+    string menu_input{};
+    char menu_input_ok{};
+    bool inMenu = true;
+    while (inMenu)
+    {
+    cout << "" << endl
+                  << "" << endl
+                  << "Menu:" << endl
+                  << "(1) Wert eingeben" << endl
+                  << "(2) Werte ausgeben" << endl
+                  << "(3) Wert suchen" << endl
+                  << "(4) Auf Sortierung prüfen" << endl
+                  << "(x) Ende" << endl
+                  << "" << endl
+                  << "" << endl;
+        cin >> menu_input;
+
+        if (menu_input.length() > 1)
+        {
+            menu_input_ok = 'r';
+        }
+        else
+        {
+            menu_input_ok = menu_input[0];
+        }
+
+        switch (menu_input_ok)
+        {
+        case '1':
+        {
+       
+            addData(input);
+        }
+        break;
+        case '2':
+        {
+            Result print = printData(input);
+            if (print.success == false)
+            {
+                print.printReason();
+            }
+        }
+        break;
+        case '3':
+
+            break;
+
+        case '4':
+        {
+            Result sortedResult = checkSorting(input);
+            if (sortedResult.success == false)
+            {
+                sortedResult.printReason();
+            }
+        }
+        break;
+
+        case 'x':
+        {
+            inMenu = false;
+        }
+        break;
+
+        default:
+        {
+            cout << "" << endl
+                      << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
+                      << "Bitte geben Sie eine gültige Option an" << endl
+                      << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
+                      << "" << endl;
+        }
+        break;
+        }
+    }
+}
+
+void aufgabe_15()
+{
+
+    bool select = true;
+    while (select)
+    {
+        char menu_input_ok{};
+        string menu_input{};
+        cout << "" << endl
+             << "" << endl
+             << "(S) Array mit String" << endl
+             << "(I) Array mit Interger" << endl
+             << "(F) Array mit Float" << endl
+             << "(E) Ende" << endl
+             << "" << endl
+             << "" << endl;
+        cin >> menu_input;
+        if (menu_input.length() > 1)
+        {
+            menu_input_ok = 'r';
+        }
+        else
+        {
+            menu_input_ok = menu_input[0];
+        }
+        switch (menu_input_ok)
+        {
+        case 's':
+        {
+            vector<string> data{};
+            inner(data);
+        }
+        break;
+
+        default:
+            break;
+        }
+    }
+}
 
 int main()
 {
-    aufgabe_16();
+    aufgabe_15();
 
-    /*    const Block testcase = Block::Di1;
+    /*    const Block testcase = BlockDi1;
        aufgabe_14_a(testcase);
-       cout << aufgabe14_b(Block::Di6) << endl; */
+       cout << aufgabe14_b(BlockDi6) << endl; */
     return 0;
 }
