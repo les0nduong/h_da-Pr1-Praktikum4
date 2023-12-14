@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-using namespace std ;
+using namespace std;
 enum class Block
 {
     Mo1,
@@ -61,39 +61,36 @@ enum Tag
     SA
 };
 
-void aufgabe_14_a(Block input)
+Tag aufgabe_14_a(Block input)
 {
     const int casted_int_block = static_cast<int>(input);
     const int divided = casted_int_block / 7;
     switch (static_cast<char>(divided))
     {
     case 0:
-        cout << "Montag" << endl;
-        ;
+        return Tag::MO;
+
         break;
     case 1:
-        cout << "Dienstag" << endl;
-        ;
+        return Tag::DI;
         break;
     case 2:
-        cout << "Mittwoch" << endl;
+        return Tag::MI;
         break;
     case 3:
-        cout << "Donnerstag" << endl;
+        return Tag::DO;
         break;
     case 4:
-        cout << "Fritag" << endl;
+        return Tag::FR;
         break;
     case 5:
-        //  cout << "Samstag" << endl;
+        return Tag::SA;
         /*  return TagSA; */
         break;
     default:
-        cout << "Invalid Argument" << endl;
-        throw invalid_argument("LMAO Cannot happen due to Strong Enum usage as input");
-        /*        return TagDI; */
 
-        //    invalid_argument; // invalid_argument
+        return Tag::DI;
+
         break;
     }
 }
@@ -133,7 +130,7 @@ void aufgabe_16()
     cout << "Division: ";
     printFraction(result);
 }
- struct Result
+struct Result
 {
     bool success;
     string reason;
@@ -141,10 +138,32 @@ void aufgabe_16()
     {
         cout << this->reason << endl;
     }
-} ;
-
+};
 template <typename T>
-Result checkSorting(vector<T> input)
+Result search(vector<T> &input)
+{
+    T toFind;
+    cout << "Suchen nach: " << endl;
+    cin >> toFind;
+    Result output;
+    for (long long unsigned int itr = 0; itr < input.size(); itr++)
+    {
+        if (toFind == input[itr])
+        {
+            output.success = true;
+            output.reason = "Die gesuchte Element steht auf ";
+
+            output.reason += to_string(itr + 1);
+            break;
+        }
+        output.success = false;
+        output.reason = "Not found";
+    }
+
+    return output;
+}
+template <typename T>
+Result checkSorting(vector<T> &input)
 {
     Result output;
     if (input.size() == 0)
@@ -155,7 +174,7 @@ Result checkSorting(vector<T> input)
     }
     else if (input.size() != 0)
     {
-         vector<T> duplicated = input;
+        vector<T> duplicated = input;
         sort(duplicated.begin(), duplicated.end());
 
         for (long long unsigned int i = 0; i < duplicated.size(); i++)
@@ -164,22 +183,23 @@ Result checkSorting(vector<T> input)
             {
                 output.reason = "";
                 output.reason += ".";
-                output.reason += static_cast<char>(i);
-                output.reason += " steht nicht in seine korrekte Position";
+                output.reason += to_string(i + 1);
+                output.reason += " ist nicht richtig platziert";
                 output.success = false;
                 return output;
                 break;
             }
         }
     }
-    
-        output.success = true;
-        return output;
-    
+
+    output.success = true;
+    return output;
 }
 template <typename T>
 void addData(vector<T> &inputArr)
+
 {
+    cout << "Eingabe: " << endl;
     T inputUser;
     cin >> inputUser;
     inputArr.push_back(inputUser);
@@ -198,6 +218,7 @@ Result printData(vector<T> input)
     }
     else
     {
+        cout << "Die Werten auf dem Array sind: " << endl;
         for (const auto &element : input)
         {
             cout << element << std::endl;
@@ -216,16 +237,16 @@ void inner(vector<T> input)
     bool inMenu = true;
     while (inMenu)
     {
-    cout << "" << endl
-                  << "" << endl
-                  << "Menu:" << endl
-                  << "(1) Wert eingeben" << endl
-                  << "(2) Werte ausgeben" << endl
-                  << "(3) Wert suchen" << endl
-                  << "(4) Auf Sortierung prüfen" << endl
-                  << "(x) Ende" << endl
-                  << "" << endl
-                  << "" << endl;
+        cout << "" << endl
+             << "" << endl
+             << "Menu:" << endl
+             << "(1) Wert eingeben" << endl
+             << "(2) Werte ausgeben" << endl
+             << "(3) Wert suchen" << endl
+             << "(4) Auf Sortierung prüfen" << endl
+             << "(x) Ende" << endl
+             << "" << endl
+             << "" << endl;
         cin >> menu_input;
 
         if (menu_input.length() > 1)
@@ -241,7 +262,7 @@ void inner(vector<T> input)
         {
         case '1':
         {
-       
+
             addData(input);
         }
         break;
@@ -255,8 +276,11 @@ void inner(vector<T> input)
         }
         break;
         case '3':
-
-            break;
+        {
+            Result goSearch = search(input);
+            goSearch.printReason();
+        }
+        break;
 
         case '4':
         {
@@ -264,6 +288,10 @@ void inner(vector<T> input)
             if (sortedResult.success == false)
             {
                 sortedResult.printReason();
+            }
+            else
+            {
+                cout << "Sorted" << endl;
             }
         }
         break;
@@ -277,10 +305,10 @@ void inner(vector<T> input)
         default:
         {
             cout << "" << endl
-                      << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
-                      << "Bitte geben Sie eine gültige Option an" << endl
-                      << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
-                      << "" << endl;
+                 << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
+                 << "Bitte geben Sie eine gültige Option an" << endl
+                 << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
+                 << "" << endl;
         }
         break;
         }
@@ -314,25 +342,49 @@ void aufgabe_15()
         }
         switch (menu_input_ok)
         {
-        case 's':
+        case 'F':
+        {
+            vector<float> data{};
+            inner(data);
+        }
+        break;
+        case 'I':
+        {
+            vector<int> data{};
+            inner(data);
+        }
+        break;
+        case 'S':
         {
             vector<string> data{};
             inner(data);
         }
         break;
-
+        case 'E':
+        {
+            select = false;
+        }
+        break;
         default:
-            break;
+        {
+            cout << "" << endl
+                 << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
+                 << "Bitte geben Sie eine gültige Option an" << endl
+                 << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl
+                 << "" << endl;
+        }
+        break;
         }
     }
 }
 
 int main()
 {
-    aufgabe_15();
+    aufgabe_16();
+ //  aufgabe_15();
 
-    /*    const Block testcase = BlockDi1;
-       aufgabe_14_a(testcase);
-       cout << aufgabe14_b(BlockDi6) << endl; */
+        Block testcase = Block::Di1;
+       cout << aufgabe_14_a(testcase)<< endl;
+       cout << aufgabe14_b(Block::Di6) << endl; 
     return 0;
 }

@@ -12,66 +12,7 @@ void printFraction(Fraction &f)
     cout << f.numerator << " / " << f.denominator << endl;
 }
 
-void readFraction(Fraction &f)
-{
-    int inputAbove{}, inputLower{};
-    bool validAbove = false;
-    bool validLower = false;
-    while (!validAbove)
-    {
-        if (!inputAbove)
-        {
-            cout << "Zaehler: ";
 
-            cin >> inputAbove;
-            cout << endl;
-        }
-        if (!cin)
-        {
-            cout << "Falsche Eingabe!" << endl;
-            cin.clear();
-            ignoreLine();
-        }
-
-        else
-        {
-
-            validAbove = true;
-            ignoreLine();
-        }
-    }
-    while (!validLower)
-    {
-
-        if (!inputLower)
-        {
-
-            cout << "Nenner: ";
-            cin >> inputLower;
-            cout << endl;
-        }
-
-        if (!cin)
-        {
-            cout << "Falsche Eingabe!" << endl;
-            cin.clear();
-            ignoreLine();
-        }
-        if (inputLower == 0)
-        {
-            cout << "bruh" << endl;
-        }
-        else
-
-        {
-            validLower = true;
-            ignoreLine();
-        }
-    }
-
-    f.numerator = inputAbove;
-    f.denominator = inputLower;
-}
 int gcd(int p, int q) // Berechnung größter gemeinsamer Teiler
 {
     while (q != 0)
@@ -148,4 +89,65 @@ Fraction divide(Fraction &f1Ref, Fraction &f2Ref)
     format(output);
 
     return output;
+}
+void readFraction(Fraction &f)
+{
+    int inputAbove{}, inputLower{};
+    bool validAbove = false;
+    bool validLower = false;
+    while (!validAbove)
+    {
+        if (!inputAbove)
+        {
+            cout << "Zaehler: ";
+
+            cin >> inputAbove;
+            cout << endl;
+        }
+        if (!cin)
+        {
+            cout << "Falsche Eingabe!" << endl;
+            cin.clear();
+            ignoreLine();
+        }
+
+        else
+        {
+
+            validAbove = true;
+            ignoreLine();
+        }
+    }
+    while (!validLower)
+    {
+
+        if (!inputLower)
+        {
+
+            cout << "Nenner: ";
+            cin >> inputLower;
+            cout << endl;
+        }
+
+        if (!cin)
+        {
+            cout << "Falsche Eingabe!" << endl;
+            cin.clear();
+            ignoreLine();
+        }
+        if (inputLower == 0)
+        {
+            cout << "bruh" << endl;
+        }
+        else
+
+        {
+            validLower = true;
+            ignoreLine();
+        }
+    }
+
+    f.numerator = inputAbove;
+    f.denominator = inputLower;
+    format(f);
 }
